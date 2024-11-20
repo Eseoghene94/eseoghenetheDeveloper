@@ -145,6 +145,7 @@ import project4 from '../../public/images/projects/CODEwithESE.png'
 import project5 from '../../public/images/projects/Citi View Hotel.png'
 import project6 from '../../public/images/projects/SchoolBOOKS —A.png'
 import project7 from '../../public/images/projects/fashion-studio-website.jpg'
+import project8 from '../../public/images/projects/influencer-website.jpg'
 import Image from 'next/image'
 
 
@@ -252,6 +253,16 @@ page transitions, cool background effects, unique design and it is mobile respon
           img={project7}
           summary='A Sleek Fashion Studio Website'
           link='/'
+          github='github.com/eseoghene94'
+          type='FeaturedProject'
+          />
+        </div>
+  <div className='col-span-12'>
+          <FeaturedProject
+          title='Influencer Website'
+          img={project8}
+          summary='A influencer book Website'
+          link='https://idyllic-dusk-052ce1.netlify.app/'
           github='github.com/eseoghene94'
           type='FeaturedProject'
           />
