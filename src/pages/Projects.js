@@ -231,7 +231,7 @@ const Projects = () => {
           title='Citi-View Website'
           img={project5}
           summary='An Hotel Website for Bookings and Reservations'
-          link='/'
+          link='https://hotels-ng-delta.vercel.app/'
           github='github.com/eseoghene94'
           type='FeaturedProject'
           />
