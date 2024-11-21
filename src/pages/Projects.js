@@ -201,7 +201,7 @@ const Projects = () => {
           title='Sella Website'
           img={project2}
           summary='A Multi-Vendor Ecommerce Store to seamlessly connect with Clients and Businesses'
-          link='/'
+          link='https://sella-two.vercel.app/'
           github='github.com/eseoghene94'
           type='FeaturedProject'
           />
@@ -220,9 +220,8 @@ const Projects = () => {
           <FeaturedProject
           title='CODEwithESE'
           img={project4}
-          summary='A professional portfolio website using React JS, Framer-motion, and Styled-components. It has smooth 
-page transitions, cool background effects, unique design and it is mobile responsive.'
-          link='/'
+          summary='A professional portfolio website using React JS, Framer-motion, and Styled-components. It has smooth page transitions, cool background effects, unique design and it is mobile responsive.'
+          link='https://eseoghenethedeveloper.vercel.app/'
           github='github.com/eseoghene94'
           type='FeaturedProject'
           />
