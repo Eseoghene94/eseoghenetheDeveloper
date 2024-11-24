@@ -241,7 +241,7 @@ const Projects = () => {
           title='SchoolBOOKS Website'
           img={project6}
           summary='A sleek Multi-Vendor Ecommerce Website'
-          link='https://schoolbooks.com'
+          link='/'
           github='github.com/eseoghene94'
           type='FeaturedProject'
           />
