@@ -211,7 +211,7 @@ const Projects = () => {
           title='Ifeoluwa Portfolio Website'
           img={project3}
           summary='A Professional Portfolio Website for my Client to showcase her Tailoring Skills and Baking Expertise '
-          link='https://mzifeoluwa.netlify.app/'
+          link='https://ifeoluwa-portfolio-khaki.vercel.app/'
           github='github.com/eseoghene94'
           type='FeaturedProject'
           />
