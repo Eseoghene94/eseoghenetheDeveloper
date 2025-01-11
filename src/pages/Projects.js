@@ -201,7 +201,7 @@ const Projects = () => {
           title='Sella Website'
           img={project2}
           summary='A Multi-Vendor Ecommerce Store to seamlessly connect with Clients and Businesses'
-          link='https://sella-two.vercel.app/'
+          link='https://sales-sella.vercel.app/'
           github='github.com/eseoghene94'
           type='FeaturedProject'
           />
@@ -231,7 +231,7 @@ const Projects = () => {
           title='Citi-View Website'
           img={project5}
           summary='An Hotel Website for Bookings and Reservations'
-          link='https://hotels-ng-delta.vercel.app/'
+          link='https://bookhotelng.vercel.app/'
           github='github.com/eseoghene94'
           type='FeaturedProject'
           />
