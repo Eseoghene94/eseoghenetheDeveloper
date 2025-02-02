@@ -1,9 +1,9 @@
 import React from 'react';
 import Head from 'next/head';
-import Layout from '@/components/layout';
-import AnimatedText from '@/components/animated-text';
+import Layout from '@/components/Layout';
+import AnimatedText from '@/components/Animated-text';
 import Link from 'next/link';
-import { GithubIcon } from '@/components/icons';
+import { GithubIcon } from '@/components/Icons';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 
