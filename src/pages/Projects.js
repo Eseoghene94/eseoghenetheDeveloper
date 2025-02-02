@@ -143,7 +143,7 @@ export default Projects
 
 
 
-// // "use client";
+// "use client";
 
 // import React from "react";
 // import Layout from "@/app/components/layout";
