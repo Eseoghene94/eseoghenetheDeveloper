@@ -81,6 +81,14 @@ const projects = [
     link: "https://idyllic-dusk-052ce1.netlify.app/",
     github: "https://github.com/eseoghene94"
   }
+   {
+    type: "Featured Project",
+    title: "Real-Estate Website",
+    summary: "A modern real-estate Website.",
+    img: project10,
+    link: "https://realestate-pied-gamma.vercel.app/",
+    github: "https://github.com/eseoghene94"
+  }
 ];
 
 const FeaturedProject = ({ type, title, summary, img, link, github }) => {
