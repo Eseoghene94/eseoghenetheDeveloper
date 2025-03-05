@@ -15,7 +15,7 @@ import project5 from '../../public/images/projects/Citi View Hotel.png';
 import project6 from '../../public/images/projects/SchoolBOOKS —A.png';
 import project7 from '../../public/images/projects/fashion-studio-website.jpg';
 import project8 from '../../public/images/projects/Influencer-website.png';
-import project9 from '../../public/images/projects/WhatsApp%20Image%202025-03-05%20at%201.17.45%20AM.jpeg';
+import project9 from '../../public/images/projects/screenshot.jpeg';
 
 const projects = [
   {
@@ -29,7 +29,7 @@ const projects = [
   {
     type: "Featured Project",
     title: "Sella Website",
-    summary: "A Multi-Vendor Ecommerce Store connecting Clients and Businesses seamlessly.",
+    summary: "A Multi-Vendor e-commerce store connecting Clients and Businesses seamlessly.",
     img: project2,
     link: "https://sales-sella.vercel.app/",
     github: "https://github.com/eseoghene94"
@@ -81,7 +81,7 @@ const projects = [
     img: project8,
     link: "https://idyllic-dusk-052ce1.netlify.app/",
     github: "https://github.com/eseoghene94"
-  }
+  },
    {
     type: "Featured Project",
     title: "Real-Estate Website",
