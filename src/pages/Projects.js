@@ -15,6 +15,7 @@ import project5 from '../../public/images/projects/Citi View Hotel.png';
 import project6 from '../../public/images/projects/SchoolBOOKS —A.png';
 import project7 from '../../public/images/projects/fashion-studio-website.jpg';
 import project8 from '../../public/images/projects/Influencer-website.png';
+import project9 from '../../public/images/projects/WhatsApp%20Image%202025-03-05%20at%201.17.45%20AM.jpeg';
 
 const projects = [
   {
@@ -85,7 +86,7 @@ const projects = [
     type: "Featured Project",
     title: "Real-Estate Website",
     summary: "A modern real-estate Website.",
-    img: project10,
+    img: project9,
     link: "https://realestate-pied-gamma.vercel.app/",
     github: "https://github.com/eseoghene94"
   }
