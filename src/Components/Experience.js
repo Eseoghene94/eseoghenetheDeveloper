@@ -1,165 +1,40 @@
-import React, { useRef } from 'react'
-import { motion, useScroll } from 'framer-motion'
-import LineIcon from './LineIcon';
+import React from 'react';
+import Timeline from './Timeline';
+import { experience } from '@/data/experience';
 
-const Details = ({ position, company, companyLink, time, address, work }) => {
-    return (
-        <li className='my-8 first:mt-0 last:mb-0 w-full sm:w-[80%] lg:w-[60%] mx-auto flex flex-col sm:flex-row sm:items-start sm:justify-between'>
-            <LineIcon />
-            <div className='sm:ml-4'>
-                <h3 className='capitalize font-bold text-2xl'>
-                    {position}&nbsp;
-                    <a
-                        href={companyLink}
-                        target='_blank'
-                        className='text-red-600 capitalize'>
-                        @{company}
-                    </a>
-                </h3>
-                <span className='capitalize font-medium text-dark/75'>
-                    {time} | {address}
-                </span>
-                <p className='font-medium'>
-                    {work}
-                </p>
-            </div>
+const Role = ({ position, company, companyLink, time, address, note, work }) => (
+  <>
+    <h3 className="font-bold text-xl sm:text-2xl">
+      {position}&nbsp;
+      {companyLink ? (
+        <a href={companyLink} target="_blank" rel="noopener noreferrer" className="text-red-600 hover:underline underline-offset-2">
+          @{company}
+        </a>
+      ) : (
+        <span className="text-red-600">@{company}</span>
+      )}
+    </h3>
+    <p className="font-medium text-dark/75 mt-1">
+      {time} | {address}
+    </p>
+    {note && <p className="font-medium mt-3">{note}</p>}
+    <ul className="mt-3 space-y-2">
+      {work.map((line) => (
+        <li key={line} className="relative pl-5 text-sm sm:text-base text-dark/90 before:absolute before:left-0 before:top-[0.6em] before:h-[2px] before:w-2.5 before:bg-dark">
+          {line}
         </li>
-    );
-};
+      ))}
+    </ul>
+  </>
+);
 
-const Experience = () => {
-    const ref = useRef(null);
-    const { scrollYProgress } = useScroll(
-        {
-            target: ref,
-            offset: ['start end', 'center start']
-        }
-    );
-
-    return (
-        <div className='my-64'>
-            <h2 className='font-bold text-8xl mb-32 w-full text-center'>
-                Experience
-            </h2>
-            <div ref={ref} className='w-full sm:w-[85%] lg:w-[75%] mx-auto relative'>
-                <motion.div
-                    style={{ scaleY: scrollYProgress }}
-                    className='absolute left-8 top-0 w-[4px] h-full bg-dark origin-top' />
-                <ul className='w-full flex flex-col sm:flex-row sm:flex-wrap sm:justify-between ml-4'>
-                    <Details
-                        position='Senior Frontend Developer' company='NodeTent'
-                        companyLink='https://www.nodetent.com'
-                        time='2024-Present'
-                        address='Lekki, Lagos'
-                        work='Headed a team responsible for developing new features for top Nigerian Brands to help elevate their UI.'
-                    />
-                    <Details
-                        position='Frontend Developer' company='GoMyCODE'
-                        companyLink='https://www.gomycode.com'
-                        time='2022-2023'
-                        address='Ikeja, Lagos'
-                        work='Tutored learners extensively on frontend technologies with thorough brush up on HTML, CSS and JavaScript.'
-                    />
-                    <Details
-                        position='Frontend Developer' company='CODEwithESE'
-                        companyLink='https://www.codewithese.com'
-                        time='2022'
-                        address='Lekki, Lagos'
-                        work='Freelance Frontend developer developing responsive and smart user friendly interfaces for brands.'
-                    />
-                    <Details
-                        position='Junior Frontend Developer' company='HugoTech'
-                        companyLink='https://www.hugo.com'
-                        time='2021-2022'
-                        address='Lekki, Lagos'
-                        work='Worked skillfully with a team responsible for developing new features for top of Nigerian Brands to help elevate their UI.'
-                    />
-                </ul>
-            </div>
-        </div>
-    )
-}
+const Experience = () => (
+  <section aria-labelledby="experience-heading" className="my-32 md:my-48">
+    <h2 id="experience-heading" className="font-bold text-5xl sm:text-6xl md:text-8xl mb-16 md:mb-32 w-full text-center">
+      Experience
+    </h2>
+    <Timeline items={experience} getKey={(r) => `${r.company}-${r.time}`} renderItem={(role) => <Role {...role} />} />
+  </section>
+);
 
 export default Experience;
-
-
-
-// import React, { useRef } from 'react'
-// import { motion, useScroll } from 'framer-motion'
-// import LineIcon from './LineIcon';
-
-
-// const Details =({position, company, companyLink, time, address, work}) => {
-//     return (
-//     <li className='my-8 first:mt-0 last:mb-0 w-[60%] mx-auto flex flex-col items-center justify-between'>
-        
-//         <LineIcon />
-//         <div>
-//             <h3 className='capitalize font-bold text-2xl'>{position}&nbsp;<a href={companyLink}
-//             target='_blank'
-//             className='text-red-600 capitalize'
-//             >@{company}</a></h3>
-//             <span className='capitalize font-medium text-dark/75'>
-//                 {time} | {address}
-//                 </span>
-//                 <p className='font-medium w-full'>
-//                     {work}
-//                 </p>
-//         </div>
-//     </li>
-//     );
-// };
-
-// const Experience = () => {
-//     const ref = useRef (null);
-//     const {scrollYProgress} = useScroll(
-//         {
-//             target: ref,
-//             offset: ['start end','center start']
-//         }
-//     )
-//   return (
-//     <div className='my-64'>
-//         <h2 className='font-bold text-8xl mb-32 w-full text-center'>
-//             Experience
-//         </h2>
-//         <div ref={ref} className='w-[75%] mx-auto relative'>
-//             <motion.div 
-//             style={{scaleY:scrollYProgress}}
-//             className='absolute left-8 top-0 w-[4px] h-full bg-dark origin-top' />
-//             <ul className='w-full flex flex-col items-start justify-between ml-4'>
-//                 <Details
-//                 position='Senior Frontend Developer' company='NodeTent'
-//                 companyLink='www.nodetent.com'
-//                 time='2024-Present' 
-//                 address='Lekki, Lagos' 
-//                 work='Headed a team responsible for developing new features for top Nigerian Brands to help elevate their UI.'
-//                 />
-//                 <Details
-//                 position='Frontend Developer' company='GoMyCODE'
-//                 companyLink='www.gomycode.com'
-//                 time='2022-2023' 
-//                 address='Ikeja, Lagos' 
-//                 work='Tutored learners extensively on frontend technologies with thorough brush up on HTML, CSS and JavaScript.'
-//                 />
-//                 <Details
-//                 position='Frontend Developer' company='CODEwithESE'
-//                 companyLink='www.codewithese.com'
-//                 time='2022' 
-//                 address='Lekki, Lagos' 
-//                 work='Freelance Frontend developer developing responsive and smart user friendly interfaces for brands.'
-//                 />
-//                 <Details
-//                 position='Junior Frontend Developer' company='HugoTech'
-//                 companyLink='www.Hugo.com'
-//                 time='2021-2022' 
-//                 address='Lekki, Lagos' 
-//                 work='Worked skillfully with a team responsible for developing new features for top of Nigerian Brands to help elevate their UI.'
-//                 />
-//             </ul>
-//         </div>
-//         </div>
-//   )
-// }
-
-// export default Experience

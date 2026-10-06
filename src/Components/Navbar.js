@@ -1,27 +1,36 @@
 import Link from 'next/link';
-import React, { useState } from 'react';
-import Logo from './Logo';
+import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import {
-  TwitterIcon,
-  DribbbleIcon,
-  GithubIcon,
-  LinkedInIcon,
-  PinterestIcon,
-} from './icons';
-import { motion } from 'framer-motion';
+import Logo from './Logo';
+import { TwitterIcon, GithubIcon, LinkedInIcon } from './icons';
+import { profile } from '@/data/profile';
+
+const NAV_LINKS = [
+  { href: '/', title: 'Home' },
+  { href: '/about', title: 'About' },
+  { href: '/projects', title: 'Projects' },
+];
+
+const SOCIALS = [
+  { href: profile.links.twitter, label: 'Twitter', Icon: TwitterIcon },
+  { href: profile.links.github, label: 'GitHub', Icon: GithubIcon },
+  { href: profile.links.linkedin, label: 'LinkedIn', Icon: LinkedInIcon },
+];
+
+const isActive = (pathname, href) => (href === '/' ? pathname === '/' : pathname.startsWith(href));
 
 const CustomLink = ({ href, title, className = '' }) => {
-  const router = useRouter();
+  const { pathname } = useRouter();
+  const active = isActive(pathname, href);
 
   return (
-    <Link href={href} className={`${className} relative group text-lg`}>
+    <Link href={href} className={`${className} relative group text-lg`} aria-current={active ? 'page' : undefined}>
       {title}
       <span
-        className={`h-[1px] inline-block bg-dark 
-        absolute left-0 -bottom-0.5 
-        group-hover:w-full transition-[width] ease duration-100
-        ${router.asPath === href ? 'w-full' : 'w-0'}`}
+        aria-hidden="true"
+        className={`h-[1px] inline-block bg-dark absolute left-0 -bottom-0.5 group-hover:w-full transition-[width] ease duration-300 ${
+          active ? 'w-full' : 'w-0'
+        }`}
       >
         &nbsp;
       </span>
@@ -31,288 +40,69 @@ const CustomLink = ({ href, title, className = '' }) => {
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const router = useRouter();
+
+  // Close the mobile menu after navigating.
+  useEffect(() => {
+    const close = () => setIsMenuOpen(false);
+    router.events.on('routeChangeStart', close);
+    return () => router.events.off('routeChangeStart', close);
+  }, [router.events]);
 
   return (
-    <header className="w-full px-4 sm:px-8 md:px-16 lg:px-32 py-4 sm:py-6 md:py-8 font-medium flex items-center justify-between relative bg-light">
-      {/* Logo */}
+    <header className="w-full px-4 sm:px-8 md:px-16 lg:px-32 py-4 sm:py-6 md:py-8 font-medium flex items-center justify-between relative bg-light z-20">
       <div className="absolute left-1/2 transform -translate-x-1/2">
         <Logo />
       </div>
 
-      {/* Menu Button */}
       <button
-        className="block md:hidden focus:outline-none"
+        type="button"
+        className="block md:hidden p-1"
         onClick={() => setIsMenuOpen((prev) => !prev)}
-        aria-label="Toggle Menu"
+        aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
+        aria-expanded={isMenuOpen}
+        aria-controls="primary-nav"
       >
-        <div className="space-y-1">
-          <span
-            className={`block h-0.5 w-6 bg-dark transition-transform ${
-              isMenuOpen ? 'rotate-45 translate-y-2' : ''
-            }`}
-          ></span>
-          <span
-            className={`block h-0.5 w-6 bg-dark transition-opacity ${
-              isMenuOpen ? 'opacity-0' : ''
-            }`}
-          ></span>
-          <span
-            className={`block h-0.5 w-6 bg-dark transition-transform ${
-              isMenuOpen ? '-rotate-45 -translate-y-2' : ''
-            }`}
-          ></span>
-        </div>
+        <span className="block space-y-1">
+          <span className={`block h-0.5 w-6 bg-dark transition-transform ${isMenuOpen ? 'rotate-45 translate-y-1.5' : ''}`} />
+          <span className={`block h-0.5 w-6 bg-dark transition-opacity ${isMenuOpen ? 'opacity-0' : ''}`} />
+          <span className={`block h-0.5 w-6 bg-dark transition-transform ${isMenuOpen ? '-rotate-45 -translate-y-1.5' : ''}`} />
+        </span>
       </button>
 
-      {/* Navigation Links */}
       <nav
+        id="primary-nav"
+        aria-label="Primary"
         className={`${
           isMenuOpen ? 'flex' : 'hidden'
-        } md:flex items-center md:items-center justify-center flex-col md:flex-row absolute md:static top-full left-0 w-full md:w-auto bg-light shadow-md md:shadow-none z-10`}
+        } md:flex items-center justify-center flex-col md:flex-row absolute md:static top-full left-0 w-full md:w-auto bg-light shadow-md md:shadow-none z-10 py-2 md:py-0`}
       >
-        <CustomLink href="/" title="Home" className="md:mr-4 py-2 md:py-0" />
-        <CustomLink href="/About" title="About" className="md:mx-4 py-2 md:py-0" />
-        <CustomLink href="/Projects" title="Projects" className="md:mx-4 py-2 md:py-0" />
-        <CustomLink href="/Articles" title="Articles" className="md:ml-4 py-2 md:py-0" />
+        {NAV_LINKS.map((link, i) => (
+          <CustomLink
+            key={link.href}
+            href={link.href}
+            title={link.title}
+            className={`py-2 md:py-0 ${i === 0 ? 'md:mr-4' : i === NAV_LINKS.length - 1 ? 'md:ml-4' : 'md:mx-4'}`}
+          />
+        ))}
       </nav>
 
-      {/* Social Media Icons */}
-      <nav className="flex items-center justify-center flex-wrap">
-        <motion.a
-          href="https://twitter.com/iLoveBRESS/"
-          target="_blank"
-          whileHover={{ y: -6 }}
-          whileTap={{ scale: 0.9 }}
-          className="w-6 mr-3"
-        >
-          <TwitterIcon />
-        </motion.a>
-        <motion.a
-          href="https://github.com/eseoghene94/"
-          target="_blank"
-          whileHover={{ y: -6 }}
-          whileTap={{ scale: 0.9 }}
-          className="w-6 mx-3"
-        >
-          <GithubIcon />
-        </motion.a>
-        <motion.a
-          href="https://www.linkedin.com/in/eseoghene-ojiyovwi-ab4179189"
-          target="_blank"
-          whileHover={{ y: -6 }}
-          whileTap={{ scale: 0.9 }}
-          className="w-6 mx-3"
-        >
-          <LinkedInIcon />
-        </motion.a>
-        {/* <motion.a
-          href="https://dribble.com"
-          target="_blank"
-          whileHover={{ y: -6 }}
-          whileTap={{ scale: 0.9 }}
-          className="w-6 mx-3"
-        >
-          <DribbbleIcon />
-        </motion.a>
-        <motion.a
-          href="https://pinterest.com"
-          target="_blank"
-          whileHover={{ y: -6 }}
-          whileTap={{ scale: 0.9 }}
-          className="w-6 ml-3"
-        >
-          <PinterestIcon />
-        </motion.a> */}
+      <nav aria-label="Social" className="flex items-center justify-center flex-wrap">
+        {SOCIALS.map(({ href, label, Icon }, i) => (
+          <a
+            key={label}
+            href={href}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={label}
+            className={`w-6 transition-transform duration-200 hover:-translate-y-1.5 active:scale-90 ${i === 0 ? 'mr-3' : 'mx-3'}`}
+          >
+            <Icon />
+          </a>
+        ))}
       </nav>
     </header>
   );
 };
 
 export default Navbar;
-
-
-// import Link from 'next/link';
-// import React, { useState } from 'react';
-// import Logo from './Logo';
-// import { useRouter } from 'next/router';
-// import {
-//   TwitterIcon,
-//   DribbbleIcon,
-//   GithubIcon,
-//   LinkedInIcon,
-//   PinterestIcon,
-// } from './icons';
-// import { motion } from 'framer-motion';
-
-// const CustomLink = ({ href, title, className = '' }) => {
-//   const router = useRouter();
-
-//   return (
-//     <Link href={href} className={`${className} relative group`}>
-//       {title}
-//       <span
-//         className={`h-[1px] inline-block bg-dark 
-//         absolute left-0 -bottom-0.5 
-//         group-hover:w-full transition-[width] ease duration-100
-//         ${router.asPath === href ? 'w-full' : 'w-0'}`}
-//       >
-//         &nbsp;
-//       </span>
-//     </Link>
-//   );
-// };
-
-// const Navbar = () => {
-//   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-//   return (
-//     <header className="w-full px-4 sm:px-8 md:px-16 lg:px-32 py-4 sm:py-6 md:py-8 font-medium flex items-center justify-between relative">
-//       {/* Logo */}
-//       <div className="absolute left-1/2 transform -translate-x-1/2">
-//         <Logo />
-//       </div>
-
-//       {/* Navigation Links */}
-//       <button
-//         className="block md:hidden"
-//         onClick={() => setIsMenuOpen((prev) => !prev)}
-//         aria-label="Toggle Menu"
-//       >
-//         <span className="hamburger"></span>
-//       </button>
-//       <nav
-//         className={`${
-//           isMenuOpen ? 'flex' : 'hidden'
-//         } md:flex items-center justify-center flex-col md:flex-row absolute md:static top-full left-0 w-full md:w-auto bg-light md:bg-transparent shadow-md md:shadow-none z-10`}
-//       >
-//         <CustomLink href="/" title="Home" className="md:mr-4" />
-//         <CustomLink href="About" title="About" className="md:mx-4" />
-//         <CustomLink href="Projects" title="Projects" className="md:mx-4" />
-//         <CustomLink href="Articles" title="Articles" className="md:ml-4" />
-//       </nav>
-
-//       {/* Social Media Icons */}
-//       <nav className="flex items-center justify-center flex-wrap">
-//         <motion.a
-//           href="https://twitter.com/iLoveBRESS/"
-//           target="_blank"
-//           whileHover={{ y: -6 }}
-//           whileTap={{ scale: 0.9 }}
-//           className="w-6 mr-3"
-//         >
-//           <TwitterIcon />
-//         </motion.a>
-//         <motion.a
-//           href="https://github.com/eseoghene94/"
-//           target="_blank"
-//           whileHover={{ y: -6 }}
-//           whileTap={{ scale: 0.9 }}
-//           className="w-6 mx-3"
-//         >
-//           <GithubIcon />
-//         </motion.a>
-//         <motion.a
-//           href="https://www.linkedin.com/in/eseoghene-ojiyovwi-ab4179189"
-//           target="_blank"
-//           whileHover={{ y: -6 }}
-//           whileTap={{ scale: 0.9 }}
-//           className="w-6 mx-3"
-//         >
-//           <LinkedInIcon />
-//         </motion.a>
-//         <motion.a
-//           href="https://dribble.com"
-//           target="_blank"
-//           whileHover={{ y: -6 }}
-//           whileTap={{ scale: 0.9 }}
-//           className="w-6 mx-3"
-//         >
-//           <DribbbleIcon />
-//         </motion.a>
-//         <motion.a
-//           href="https://pinterest.com"
-//           target="_blank"
-//           whileHover={{ y: -6 }}
-//           whileTap={{ scale: 0.9 }}
-//           className="w-6 ml-3"
-//         >
-//           <PinterestIcon />
-//         </motion.a>
-//       </nav>
-//     </header>
-//   );
-// };
-
-// export default Navbar;
-
-
-
-// import Link from 'next/link'
-// import React from 'react'
-// import Logo from './Logo'
-// import { useRouter } from 'next/router'
-// import  {TwitterIcon, DribbbleIcon, GithubIcon, LinkedInIcon, PinterestIcon } from './icons'
-// import { motion } from 'framer-motion'
-
-// const CustomLink = ({href, title, className=``}) => {
-//     const router = useRouter();
-    
-//     return(
-//         <Link href={href} className={`${className} relative group`}>
-//     {title}
-
-//     <span  className={`h-[1px] inline-block bg-dark 
-//     absolute left-0 -bottom-0.5 
-//     group-hover:w-full transition-[width] ease duration-100
-//     ${router.asPath === href ? 'w-full' : 'w-0'}
-//     `}
-//     >&nbsp;</span>
-//     </Link>
-//     )
-// }
-// const Navbar = () => {
-//   return (
-//     <header
-//     className='w-full px-32 py-8 font-medium flex items-center justify-between'>
-//         <nav>
-//             <CustomLink href='/' title='Home' className='mr-4'/>
-//             <CustomLink href='About' title='About' className='mx-4'/>
-//             <CustomLink href='Projects' title='Projects' className='mx-4'/>
-//             <CustomLink href='Articles' title='Articles' className='ml-4'/>
-//         </nav>
-        
-//         <nav className='flex items-center justify-center flex-wrap'>
-//         <motion.a href='https://twitter.com/iLoveBRESS/' target={'_blank'}
-//         whileHover={{y:-6}}
-//         whileTap={{scale:0.9}}
-//         className='w-6 mr-3'
-//         ><TwitterIcon/></motion.a>
-//         <motion.a href='https://github.com/eseoghene94/' target={'_blank'}
-//         whileHover={{y:-6}}
-//         whileTap={{scale:0.9}}
-//         className='w-6 mx-3'
-//         ><GithubIcon/></motion.a>
-//         <motion.a href='https:// www.linkedin.com/in/eseoghene-ojiyovwi-ab4179189' target={'_blank'}
-//         whileHover={{y:-6}}
-//         whileTap={{scale:0.9}}
-//         className='w-6 mx-3'
-//         ><LinkedInIcon/></motion.a>
-//         <motion.a href='https://dribble.com' target={'_blank'}
-//         whileHover={{y:-6}}
-//         whileTap={{scale:0.9}}
-//         className='w-6 mx-3'
-//         ><DribbbleIcon/></motion.a>
-//         <motion.a href='https://pinterest.com' target={'_blank'}
-//         whileHover={{y:-6}}
-//         whileTap={{scale:0.9}}
-//         className='w-6 ml-3'
-//         ><PinterestIcon/></motion.a>
-//         </nav>
-//         <div className='absolute left-[50%] translate-x-[-50%]'>
-//         <Logo/>
-//         </div>
-//         </header>
-//   )
-// }
-
-// export default Navbar

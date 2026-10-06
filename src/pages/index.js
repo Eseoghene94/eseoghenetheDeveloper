@@ -1,28 +1,63 @@
-import Head from 'next/head';
-import Image from 'next/image';
+import Link from 'next/link';
+import { useRef } from 'react';
+import { gsap, useGSAP, MOTION } from '@/lib/gsap';
 import profilePic from '../../public/images/profile/developer-pic-1.png';
 import AnimatedText from '@/Components/AnimatedText';
-import Link from 'next/link';
 import HireMe from '@/Components/HireMe';
+import InkPortrait from '@/Components/InkPortrait';
+import Lightbulb from '@/Components/Lightbulb';
+import Seo from '@/Components/Seo';
 import { LinkArrow } from '@/Components/icons';
-import lightbulb from '../../public/images/svgs/miscellaneous_icons_1.svg';
+import { SITE_URL, profile } from '@/data/profile';
+
+const personJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: profile.name,
+  alternateName: profile.handle,
+  jobTitle: profile.title,
+  email: `mailto:${profile.email}`,
+  url: SITE_URL,
+  image: `${SITE_URL}/og.png`,
+  address: { '@type': 'PostalAddress', addressCountry: 'NG' },
+  sameAs: [profile.links.github, profile.links.linkedin, profile.links.twitter],
+  alumniOf: { '@type': 'CollegeOrUniversity', name: 'University of Benin' },
+  knowsAbout: ['Software Architecture', 'Next.js', 'NestJS', 'Django', 'React Native', 'TypeScript', 'DevOps'],
+};
 
 export default function Home() {
+  const root = useRef(null);
+
+  // Supporting copy follows the headline in, after the portrait starts to develop.
+  useGSAP(
+    () => {
+      const mm = gsap.matchMedia();
+      mm.add(MOTION, ({ conditions }) => {
+        const items = gsap.utils.toArray('.hero-copy, .hero-actions > *', root.current);
+        if (conditions.reduce) {
+          gsap.set(['.hero-copy', '.hero-actions'], { autoAlpha: 1 });
+          return;
+        }
+        gsap.set(['.hero-copy', '.hero-actions'], { autoAlpha: 1 });
+        gsap.from(items, { y: 28, autoAlpha: 0, duration: 1.1, stagger: 0.12, delay: 1.1 });
+      });
+    },
+    { scope: root },
+  );
+
   return (
     <>
-      <Head>
-        <title>CODEwithESE</title>
-        <meta name="description" content="A Sound Portfolio" />
-      </Head>
-      <main className="flex items-center text-dark w-full min-h-screen">
-        <layout className="pt-0">
+      <Seo jsonLd={personJsonLd} />
+      <main ref={root} className="flex items-center text-dark w-full min-h-screen">
+        <div className="pt-0">
           <div className="flex flex-col lg:flex-row items-center justify-between w-full">
             {/* Profile Image */}
             <div className="w-full lg:w-1/2 flex justify-center">
-              <Image
+              <InkPortrait
                 src={profilePic}
-                alt="CODEwithESE"
-                className="w-3/4 h-auto lg:w-full"
+                alt={`Illustrated portrait of ${profile.shortName}`}
+                className="w-3/4 lg:w-full"
+                sizes="(min-width: 1024px) 50vw, 75vw"
                 priority
               />
             </div>
@@ -33,24 +68,22 @@ export default function Home() {
                 text="Turning Vision Into Reality With Code And Design."
                 className="!text-4xl md:!text-5xl lg:!text-6xl text-center lg:!text-left !text-blue-800"
               />
-              <p className="my-4 text-sm sm:text-base md:text-lg font-medium text-center lg:text-left">
-                As a skilled full-stack developer, I am dedicated to turning
-                ideas into innovative web applications. Explore my latest
-                projects and articles, showcasing my expertise in React.js,
-                Next.js, and web development.
+              <p data-hero className="hero-copy my-4 text-sm sm:text-base md:text-lg font-medium text-center lg:text-left">
+                I&apos;m David, a lead full-stack software engineer with 6+ years of turning ideas into
+                production systems, from multi-vendor marketplaces to healthcare and IoT platforms. Explore my
+                work across Next.js, NestJS, Django and React Native.
               </p>
-              <div className="flex flex-col sm:flex-row items-center self-center lg:self-start mt-2">
+              <div data-hero className="hero-actions flex flex-col sm:flex-row items-center self-center lg:self-start mt-2">
                 <Link
-                  href="/EseogheneDavid.pdf"
+                  href={profile.resume}
                   target="_blank"
                   className="flex items-center bg-dark text-light px-6 py-2.5 rounded-lg text-lg font-semibold hover:bg-light hover:text-dark border-2 border-solid border-transparent hover:border-dark"
-                  download={true}
+                  download
                 >
                   Resume <LinkArrow className="w-6 ml-1" />
                 </Link>
                 <Link
-                  href="mailto:eseoghenedavid1@gmail.com"
-                  target="_blank"
+                  href={`mailto:${profile.email}`}
                   className="mt-4 sm:mt-0 sm:ml-4 text-lg font-medium capitalize text-dark underline underline-offset-2"
                 >
                   Contact
@@ -58,62 +91,10 @@ export default function Home() {
               </div>
             </div>
           </div>
-        </layout>
-        <HireMe />
-        <div className="absolute right-4 sm:right-8 bottom-4 sm:bottom-8 inline-block w-16 sm:w-24">
-          <Image src={lightbulb} alt="CODEwithESE" className="w-full h-auto" />
         </div>
+        <HireMe />
+        <Lightbulb />
       </main>
     </>
   );
 }
-
-
-// import Head from 'next/head'
-// import Image from 'next/image'
-// import profilePic from '../../public/images/profile/developer-pic-1.png'
-// import AnimatedText from '@/Components/AnimatedText'
-// import Link from 'next/link'
-// import HireMe from '@/Components/HireMe'
-// import { LinkArrow } from '@/Components/icons'
-// import lightbulb from '../../public/images/svgs/miscellaneous_icons_1.svg'
-
-// export default function Home() {
-//   return (
-//     <>
-//       <Head>
-//         <title>CODEwithESE</title>
-//         <meta name="description" content="A Sound Portfolio" />
-       
-//       </Head>
-//       <main className='flex items-center text-dark w-full min-h-screen'>
-//         <layout className='pt-0'>
-//         <div className='flex items-center justify-between w-full'>
-//           <div className='w-1/2'>
-//             <Image src={profilePic} alt='CODEwithESE' className='w-full h-auto'/>
-//           </div>
-//           <div className='w-1/2 flex flex-col items-center px-32 self-center'>
-//             <AnimatedText text='Turning Vision Into Reality With Code And Design.' className='!text-6xl !text-left !text-blue-800'/>
-//             <p className='my-4 text-base font-medium'>As a skilled full-stack developer, I am dedicated to turning ideas into innovative web applications. 
-//             Explore my latest projects and articles, showcasing my expertise in React.js, Next.js and web development.</p>
-//             <div className='flex items-center self-start mt-2'>
-//               <Link href='/EseogheneDavid.pdf' target={'_blank'}
-//               className='flex items-center bg-dark text-light px-6 p-2.5 rounded-lg text-lg font-semibold hover:bg-light hover:text-dark border-2 border-solid border-transparent hover:border-dark'
-//               download={true}
-//               >Resume <LinkArrow className='w-6 ml-1'/>
-//               </Link>
-//               <Link href='mailto:eseoghenedavid1@gmail.com' target={'_blank'}
-//               className='ml-4 text-lg font-medium capitalize text-dark underline underline-offset-2 '
-//               >Contact</Link>
-//             </div>
-//           </div>
-//         </div>
-//         </layout>
-//         <HireMe/>
-//         <div className='absolute right-8 bottom-8 inline-block w-24'>
-//             <Image src={lightbulb} alt='CODEwithESE' className='w-full h-auto'/>
-//           </div>
-//       </main>
-//     </>
-//   )
-// }

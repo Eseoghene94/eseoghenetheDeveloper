@@ -1,80 +1,94 @@
-import React from 'react'
-import { motion } from 'framer-motion'
+import React, { useRef } from 'react';
+import { gsap, useGSAP } from '@/lib/gsap';
+import { skills } from '@/data/skills';
 
-const Skill = ({ name, x, y }) => {
-  return (
-    <motion.div
-      className='skill-item flex items-center justify-center rounded-full font-semibold bg-dark text-light shadow-dark cursor-pointer py-3 px-8 absolute'
-      whileHover={{ scale: 1.05 }}
-      initial={{ x: 0, y: 0 }}
-      whileInView={{ x: x, y: y }}
-      transition={{ duration: 1.5 }}
-      viewport={{ once: true }}
-    >
-      {name}
-    </motion.div>
-  )
-}
-
+// "Chaos to structure": on larger screens the skills start as a scattered cloud
+// (a nod to the original bubble layout) and settle into their groups as you
+// scroll. Phones get a simpler group-by-group reveal.
 const Skills = () => {
+  const root = useRef(null);
+
+  useGSAP(
+    () => {
+      const el = root.current;
+      const chips = el.querySelectorAll('.skill-chip');
+      const labels = el.querySelectorAll('.skill-label');
+      const mm = gsap.matchMedia();
+
+      mm.add('(min-width: 768px) and (prefers-reduced-motion: no-preference)', () => {
+        // Offsets are measured from layout positions (offsetLeft/Top), which
+        // ignore transforms, so they stay correct on refresh/resize.
+        const offsetTo = (chip, axis) => {
+          const size = axis === 'x' ? el.offsetWidth : el.offsetHeight;
+          const pos = axis === 'x' ? chip.offsetLeft + chip.offsetWidth / 2 : chip.offsetTop + chip.offsetHeight / 2;
+          const spread = axis === 'x' ? 0.4 : 0.3;
+          return size / 2 - pos + gsap.utils.random(-size * spread, size * spread);
+        };
+
+        gsap.from(chips, {
+          x: (i, chip) => offsetTo(chip, 'x'),
+          y: (i, chip) => offsetTo(chip, 'y'),
+          rotate: () => gsap.utils.random(-28, 28),
+          scale: () => gsap.utils.random(0.75, 1.25),
+          ease: 'none',
+          stagger: { each: 0.004, from: 'random' },
+          scrollTrigger: {
+            trigger: el,
+            start: 'top 80%',
+            end: 'center 55%',
+            scrub: 1.2,
+            invalidateOnRefresh: true,
+          },
+        });
+
+        gsap.from(labels, {
+          autoAlpha: 0,
+          y: 16,
+          ease: 'none',
+          stagger: 0.05,
+          scrollTrigger: { trigger: el, start: 'center 70%', end: 'center 55%', scrub: 1 },
+        });
+      });
+
+      mm.add('(max-width: 767px) and (prefers-reduced-motion: no-preference)', () => {
+        el.querySelectorAll('.skill-group').forEach((group) => {
+          gsap.from(group.querySelectorAll('.skill-label, .skill-chip'), {
+            y: 20,
+            autoAlpha: 0,
+            duration: 0.7,
+            stagger: 0.03,
+            scrollTrigger: { trigger: group, start: 'top 85%', once: true },
+          });
+        });
+      });
+    },
+    { scope: root },
+  );
+
   return (
-    <>
-      <h2 className='font-bold text-8xl mt-64 w-full text-center text-red-500'>Skills</h2>
-      <div className='skills-container w-full h-screen relative flex items-center justify-center bg-circularLight'>
-        <motion.div
-          className='main-skill flex items-center justify-center rounded-full font-semibold bg-dark text-light p-8 shadow-dark cursor-pointer'
-          whileHover={{ scale: 1.05 }}
-        >
-          Web
-        </motion.div>
-
-        {/* Responsive positioning using Tailwind's breakpoints */}
-        <Skill name='HTML' x='-25vw' y='2vw' />
-        <Skill name='CSS' x='-5vw' y='-10vw' />
-        <Skill name='Javascript' x='20vw' y='-2vw' />
-        <Skill name='React.JS' x='0vw' y='12vw' />
-        <Skill name='Next.JS' x='-20vw' y='-15vw' />
-        <Skill name='Python' x='15vw' y='-12vw' />
-        <Skill name='Express' x='32vw' y='-15vw' />
-        <Skill name='Figma' x='0vw' y='-20vw' />
-        <Skill name='Tailwind CSS' x='-25vw' y='18vw' />
-        <Skill name='Databases' x='18vw' y='18vw' />
-        <Skill name='Typescript' x='20vw' y='25vw' />
-        <Skill name='Nuxt.JS' x='-20vw' y='-23vw' />
-        <Skill name='Nest.JS' x='15vw' y='-25vw' />
-        <Skill name='Angular' x='-10vw' y='25vw' />
-        <Skill name='Django' x='30vw' y='8vw' />
-
-        {/* For smaller screens, adjust the positions */}
-        <style jsx>{`
-          @media (max-width: 768px) {
-            .skills-container {
-              flex-direction: column;
-              align-items: flex-start;
-              padding: 2rem;
-            }
-            .skill-item {
-              position: relative;
-              margin: 0.5rem 0;
-              width: auto;
-              left: 0;
-              top: 0;
-              transform: none !important;
-            }
-            .main-skill {
-              margin-bottom: 2rem;
-            }
-            .text-8xl {
-              font-size: 2.5rem;
-            }
-            .bg-circularLight {
-              background-size: contain;
-            }
-          }
-        `}</style>
+    <section aria-labelledby="skills-heading" className="mt-32 md:mt-48">
+      <h2 id="skills-heading" className="font-bold text-5xl sm:text-6xl md:text-8xl mb-16 md:mb-24 w-full text-center">
+        Skills
+      </h2>
+      <div ref={root} className="relative w-full md:w-[92%] lg:w-[85%] mx-auto grid gap-x-10 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
+        {skills.map(({ group, items }) => (
+          <div key={group} className="skill-group">
+            <h3 className="skill-label mb-4 text-sm font-bold uppercase tracking-wider text-dark/75">{group}</h3>
+            <ul className="flex flex-wrap gap-2.5">
+              {items.map((item) => (
+                <li
+                  key={item}
+                  className="skill-chip rounded-full bg-dark text-light font-semibold py-2 px-4 text-sm sm:text-base cursor-default hover:bg-primary transition-colors"
+                >
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
       </div>
-    </>
-  )
-}
+    </section>
+  );
+};
 
-export default Skills
+export default Skills;

@@ -1,3 +1,62 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  :focus-visible {
+    outline: 2px solid #1b1b1b;
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  .logo-mark:hover {
+    animation: logo-cycle 1s linear infinite;
+  }
+
+  @keyframes logo-cycle {
+    0%,
+    100% {
+      background-color: #121212;
+    }
+    20% {
+      background-color: rgb(131, 58, 180);
+    }
+    40% {
+      background-color: rgb(253, 29, 29);
+    }
+    60% {
+      background-color: rgb(252, 176, 69);
+    }
+    80% {
+      background-color: rgb(131, 58, 180);
+    }
+  }
+
+  /* Hero elements are revealed by GSAP. They are hidden only when JS is running
+     (the `js` class is set before first paint in _document), and a CSS fallback
+     shows them anyway if scripts fail to start. */
+  .js [data-hero] {
+    visibility: hidden;
+    animation: hero-fallback 0s 2.5s forwards;
+  }
+
+  @keyframes hero-fallback {
+    to {
+      visibility: visible;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .js [data-hero] {
+      visibility: visible;
+      animation: none;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
