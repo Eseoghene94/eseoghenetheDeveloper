@@ -43,7 +43,7 @@ export const projects = [
     problem:
       'Several food brands needed to run on shared technology without losing their individual identities and offerings.',
     contribution: [
-      'Led full-stack development as Senior Full-Stack Developer / Team Lead at Tiva Creatives.',
+      'Led full-stack development as Senior Full-Stack Developer and Team Lead.',
       'Built the shared backend APIs and services behind the brands.',
       'Delivered web interfaces for each brand on a common platform.',
       'Coordinated a distributed team through sprints, code reviews and releases.',

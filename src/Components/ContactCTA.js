@@ -32,17 +32,17 @@ const ContactCTA = ({ title = "Let's build something that holds up." }) => (
             Download resume
           </Link>
         </div>
-        </div>
-        {/* Decorative; hidden on phones to keep the CTA short */}
-        <Image
-          src={codingArt}
-          alt=""
-          aria-hidden="true"
-          unoptimized
-          className="hidden sm:block mx-auto md:mx-0 h-auto w-full max-w-xs md:w-[38%] md:max-w-sm shrink-0"
-        />
       </div>
-    </section>
-  );
+      {/* Decorative; hidden on phones to keep the CTA short */}
+      <Image
+        src={codingArt}
+        alt=""
+        aria-hidden="true"
+        unoptimized
+        className="hidden sm:block mx-auto md:mx-0 h-auto w-full max-w-xs md:w-[38%] md:max-w-sm shrink-0"
+      />
+    </div>
+  </section>
+);
 
-  export default ContactCTA;
+export default ContactCTA;

@@ -23,7 +23,7 @@ export const experience = [
     company: 'Tiva Creatives',
     time: '2025 – 2026',
     address: 'Remote',
-    note: 'Led full-stack and mobile development for a portfolio of production products, including Homefoodly and TheOtherWife.',
+    note: 'Led full-stack and mobile development across a portfolio of production products.',
     work: [
       'Directed a distributed development team, coordinating sprints, code reviews and delivery across concurrent client and in-house projects.',
       'Built backend APIs and services powering multi-vendor marketplaces, food-tech ecosystems and IoT energy monitoring platforms.',
