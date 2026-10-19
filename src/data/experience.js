@@ -72,3 +72,12 @@ export const education = [
     info: 'An intensive, self-directed move from petroleum engineering into software: the Axia Africa Frontend Development Program, Coursera software engineering and full-stack courses, and Udemy full-stack courses (including Brad Traversy) covering React, Node.js, Next.js, TypeScript, MongoDB, PostgreSQL, REST APIs and software architecture.',
   },
 ];
+
+// Professional certifications, shown under Education. `issuer` is optional.
+export const certifications = [
+  { name: 'Certified Secure Software Lifecycle Professional (CSSLP)', issuer: 'ISC2' },
+  { name: 'Azure AI Essentials Professional Certificate', issuer: 'Microsoft' },
+  { name: 'Advanced Azure Microservices with .NET for Developers', issuer: '' },
+  { name: 'Cloud Governance and Compliance', issuer: '' },
+  { name: 'Agile Software Development and the SDLC', issuer: '' },
+];
