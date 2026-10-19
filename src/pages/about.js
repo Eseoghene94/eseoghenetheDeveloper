@@ -9,7 +9,8 @@ import Experience from '@/Components/Experience';
 import Education from '@/Components/Education';
 import ContactCTA from '@/Components/ContactCTA';
 import Seo from '@/Components/Seo';
-import { profile } from '@/data/profile';
+import { SITE_URL, profile } from '@/data/profile';
+import { breadcrumbSchema, graph, personSchema } from '@/lib/seo';
 // portrait-lead.jpg is A.jpeg with its baked-in black letterbox bars cropped off.
 import leadPhoto from '../../public/about/portrait-lead.jpg';
 import insetPhotoLeft from '../../public/about/B.jpeg';
@@ -44,12 +45,22 @@ const Caption = ({ children }) => (
   <figcaption className="mt-3 border-l-2 border-primary pl-3 text-xs italic leading-snug text-dark/70">{children}</figcaption>
 );
 
+const aboutJsonLd = graph(
+  { '@type': 'ProfilePage', '@id': `${SITE_URL}/about#page`, url: `${SITE_URL}/about`, mainEntity: personSchema() },
+  breadcrumbSchema([
+    { name: 'Home', path: '/' },
+    { name: 'About', path: '/about' },
+  ]),
+);
+
 const About = () => {
   return (
     <>
       <Seo
         title="About"
-        description={`About ${profile.shortName}: lead full-stack software engineer, from offshore petroleum engineering to leading software teams. Experience, skills and education.`}
+        description={`About ${profile.shortName}: lead full-stack software engineer, from offshore petroleum engineering to leading software teams. Experience, skills, education and certifications.`}
+        type="profile"
+        jsonLd={aboutJsonLd}
       />
       <main className="flex w-full flex-col items-center justify-center">
         <Layout className="pt-16">

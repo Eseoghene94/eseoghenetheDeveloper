@@ -10,6 +10,7 @@ import Seo from '@/Components/Seo';
 import { LinkArrow } from '@/Components/icons';
 import { gsap, useGSAP } from '@/lib/gsap';
 import { getProject, projects } from '@/data/projects';
+import { PERSON_ID, breadcrumbSchema, graph } from '@/lib/seo';
 
 export const getStaticPaths = () => ({
   paths: projects.map((p) => ({ params: { slug: p.slug } })),
@@ -67,7 +68,19 @@ const CaseStudy = ({ slug }) => {
 
   return (
     <>
-      <Seo title={`${project.title} — Case Study`} description={project.summary} />
+      <Seo
+        title={`${project.title} — Case Study`}
+        description={project.summary}
+        type="article"
+        jsonLd={graph(
+          { '@type': 'CreativeWork', name: project.title, description: project.summary, author: { '@id': PERSON_ID } },
+          breadcrumbSchema([
+            { name: 'Home', path: '/' },
+            { name: 'Projects', path: '/projects' },
+            { name: project.title, path: `/projects/${slug}` },
+          ]),
+        )}
+      />
       <main ref={root} className="w-full mb-16" key={slug}>
         <Layout className="pt-12 sm:pt-16">
           <Link href="/projects" className="cs-kicker inline-flex items-center gap-2 font-semibold underline-offset-4 hover:underline">

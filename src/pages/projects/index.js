@@ -179,7 +179,7 @@ const Projects = () => {
     <>
       <Seo
         title="Projects"
-        description={`Case studies from ${profile.shortName}: SchoolBooks, Homefoodly, TheOtherWife, VoltSense, MedMeet, PsalmsWings LMS and Complete Market.`}
+        description={`Case studies from ${profile.shortName}: ${new Intl.ListFormat('en-GB').format(projects.map((p) => p.title))}.`}
       />
       <main ref={root} className="w-full mb-16 flex flex-col items-center justify-center">
         <Layout className="pt-16">

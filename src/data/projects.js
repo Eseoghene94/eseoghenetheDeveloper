@@ -10,8 +10,9 @@ import citiView from '../../public/images/projects/citi-view-hotel.png';
 import realEstate from '../../public/images/projects/real-estate.jpeg';
 import ifeoluwa from '../../public/images/projects/ifeoluwa.png';
 import influencer from '../../public/images/projects/influencer-website.png';
+import codewithese from '../../public/images/projects/codewithese.jpg';
 
-export const domains = ['All', 'Education', 'Food-tech', 'Healthcare', 'Energy & IoT', 'Marketplace'];
+export const domains = ['All', 'Education', 'Food-tech', 'Healthcare', 'Energy & IoT', 'Marketplace', 'Studio & Training'];
 
 export const projects = [
   {
@@ -128,6 +129,26 @@ export const projects = [
     ],
     stack: ['Django', 'PostgreSQL'],
     images: [],
+    featured: true,
+  },
+  {
+    slug: 'codewithese',
+    title: 'CODEwithEse',
+    domain: 'Studio & Training',
+    tagline: 'Development studio and training academy',
+    summary:
+      'The website for CODEwithEse, a development studio and training academy that helps founders, SMEs and organisations design, build and scale digital products and skilled tech teams.',
+    problem:
+      'The studio needed a credible, fast-loading front door that explains its services and delivery approach, showcases its work, and turns visitors into project enquiries.',
+    contribution: [
+      'Designed and built the full site: services, delivery approach, portfolio and contact flows.',
+      'Created an animated, high-impact hero and scroll-driven interactions with GSAP.',
+      'Structured every page around a single call to action: start a project.',
+      'Shipped as a lightweight Vite build deployed on Vercel.',
+    ],
+    stack: ['React', 'Vite', 'GSAP', 'Vercel'],
+    images: [codewithese],
+    liveUrl: 'https://codewithesecom.vercel.app/',
     featured: true,
   },
 ];

@@ -9,6 +9,7 @@ const NAV_LINKS = [
   { href: '/', title: 'Home' },
   { href: '/about', title: 'About' },
   { href: '/projects', title: 'Projects' },
+  { href: '/play', title: 'Play' },
 ];
 
 const SOCIALS = [
@@ -40,7 +41,16 @@ const CustomLink = ({ href, title, className = '' }) => {
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const router = useRouter();
+
+  // Compact the sticky header once the page has scrolled.
+  useEffect(() => {
+    const onScroll = () => setIsScrolled(window.scrollY > 8);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
 
   // Close the mobile menu after navigating.
   useEffect(() => {
@@ -50,7 +60,13 @@ const Navbar = () => {
   }, [router.events]);
 
   return (
-    <header className="w-full px-4 sm:px-8 md:px-16 lg:px-32 py-4 sm:py-6 md:py-8 font-medium flex items-center justify-between relative bg-light z-20">
+    // Sticky (not fixed) so it keeps its place in the flow and no page needs a top offset.
+    // z-50 keeps it above page content; PageTransition (z-60) still covers it.
+    <header
+      className={`sticky top-0 z-50 w-full px-4 sm:px-8 md:px-16 lg:px-32 font-medium flex items-center justify-between bg-light/95 backdrop-blur-sm border-b-2 border-solid transition-[padding,border-color] duration-300 ${
+        isScrolled ? 'py-3 md:py-4 border-dark' : 'py-4 sm:py-6 md:py-8 border-transparent'
+      }`}
+    >
       <div className="absolute left-1/2 transform -translate-x-1/2">
         <Logo />
       </div>

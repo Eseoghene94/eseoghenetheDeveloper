@@ -60,3 +60,30 @@
     }
   }
 }
+
+/* Keeps in-page anchors (skip link, #headings) clear of the sticky header. */
+html {
+  scroll-padding-top: 7rem;
+}
+
+/* /play breathing guide: 4s in, 4s out. */
+@keyframes breathe {
+  0%,
+  100% {
+    transform: scale(0.6);
+  }
+  50% {
+    transform: scale(1);
+  }
+}
+
+.breathe {
+  animation: breathe 8s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .breathe {
+    animation: none;
+    transform: scale(0.85);
+  }
+}

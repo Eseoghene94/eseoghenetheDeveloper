@@ -8,22 +8,10 @@ import InkPortrait from '@/Components/InkPortrait';
 import Lightbulb from '@/Components/Lightbulb';
 import Seo from '@/Components/Seo';
 import { LinkArrow } from '@/Components/icons';
-import { SITE_URL, profile } from '@/data/profile';
+import { profile } from '@/data/profile';
+import { graph, personSchema, websiteSchema } from '@/lib/seo';
 
-const personJsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'Person',
-  name: profile.name,
-  alternateName: profile.handle,
-  jobTitle: profile.title,
-  email: `mailto:${profile.email}`,
-  url: SITE_URL,
-  image: `${SITE_URL}/og.png`,
-  address: { '@type': 'PostalAddress', addressCountry: 'NG' },
-  sameAs: [profile.links.github, profile.links.linkedin, profile.links.twitter],
-  alumniOf: { '@type': 'CollegeOrUniversity', name: 'University of Benin' },
-  knowsAbout: ['Software Architecture', 'Next.js', 'NestJS', 'Django', 'React Native', 'TypeScript', 'DevOps'],
-};
+const homeJsonLd = graph(websiteSchema(), personSchema());
 
 export default function Home() {
   const root = useRef(null);
@@ -47,7 +35,7 @@ export default function Home() {
 
   return (
     <>
-      <Seo jsonLd={personJsonLd} />
+      <Seo jsonLd={homeJsonLd} />
       <main ref={root} className="flex items-center text-dark w-full min-h-screen">
         <div className="pt-0">
           <div className="flex flex-col lg:flex-row items-center justify-between w-full">

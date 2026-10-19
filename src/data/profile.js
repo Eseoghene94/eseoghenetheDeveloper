@@ -1,6 +1,8 @@
 // Single source of truth for personal details. Everything here comes from the
 // CV in /public/EseogheneDavid.pdf — update both together.
 
+import { projects } from './projects';
+
 export const SITE_URL = 'https://eseoghenethedeveloper.vercel.app';
 
 export const profile = {
@@ -27,7 +29,7 @@ export const profile = {
   ],
   stats: [
     { value: 6, suffix: '+', label: 'Years of Experience' },
-    { value: 7, suffix: '', label: 'Flagship Platforms' },
+    { value: projects.filter((p) => p.featured).length, suffix: '', label: 'Flagship Platforms' },
     { value: 6, suffix: '', label: 'Industries Served' },
   ],
   industries: ['Education', 'Healthcare', 'E-commerce', 'Energy', 'Aviation', 'Logistics'],

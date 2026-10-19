@@ -35,7 +35,7 @@ const NotFound = () => {
 
   return (
     <>
-      <Seo title="Page not found" description="This page could not be found." />
+      <Seo title="Page not found" description="This page could not be found." noindex />
       <main ref={root} className="w-full bg-light text-dark">
         <section
           data-hero
