@@ -67,7 +67,12 @@ const Navbar = () => {
         isScrolled ? 'py-3 md:py-4 border-dark' : 'py-4 sm:py-6 md:py-8 border-transparent'
       }`}
     >
-      <div className="absolute left-1/2 transform -translate-x-1/2">
+      {/* Absolutely positioned, so it doesn't size the header: centre it and shrink it when compact. */}
+      <div
+        className={`absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 [&>div]:mt-0 transition-transform duration-300 ${
+          isScrolled ? 'scale-75' : ''
+        }`}
+      >
         <Logo />
       </div>
 
